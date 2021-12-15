@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AnggotaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('system.index');
+    return view('dashboard');
 });
+Route::get('tables', function () {
+    return view('system.tables');
+});
+
+// routing for anggota
+Route::get('/anggota', [AnggotaController::class, 'index']);
+Route::get('/anggota/detail/{id}', [AnggotaController::class, 'view']);
+Route::get('/anggota/add', [AnggotaController::class, 'add']);
+Route::post('/anggota/store', [AnggotaController::class, 'store']);
+Route::get('/anggota/edit/{id}', [AnggotaController::class, 'edit']);
+Route::post('/anggota/update', [AnggotaController::class, 'update']);
+Route::get('/anggota/delete/{id}', [AnggotaController::class, 'delete']);
