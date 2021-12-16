@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\PengurusController;
+use App\Http\Controllers\ProgramKerjaController;
+use App\Http\Controllers\DanaController;
+use App\Http\Controllers\DivisiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,3 +59,12 @@ Route::post('/dana/store', [DanaController::class, 'store']);
 Route::get('/dana/edit/{id}', [DanaController::class, 'edit']);
 Route::post('/dana/update', [DanaController::class, 'update']);
 Route::get('/dana/delete/{id}', [DanaController::class, 'delete']);
+
+// routing for divisi
+Route::get('/divisi', [DivisiController::class, 'index']);
+Route::get('/divisi/detail/{id}', [DivisiController::class, 'view']);
+Route::get('/divisi/add', [DivisiController::class, 'add']);
+Route::post('/divisi/store', [DivisiController::class, 'store']);
+Route::get('/divisi/edit/{id}', [DivisiController::class, 'edit']);
+Route::post('/divisi/update', [DivisiController::class, 'update']);
+Route::get('/divisi/delete/{id}', [DivisiController::class, 'delete']);
