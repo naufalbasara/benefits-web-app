@@ -1,5 +1,5 @@
 @extends('layout.template')
-@section('title', 'Anggota Forda')
+@section('title', 'Pengurus Forda')
 <!DOCTYPE html>
 <html lang="en">
 
