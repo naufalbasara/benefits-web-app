@@ -18,7 +18,35 @@ use App\Http\Controllers\DivisiController;
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    $anggota = DB::table('anggota')
+        ->count();
+    $doneProgram = DB::table('programkerja')
+        ->where('status', '=', 'Sudah')
+        ->count();
+
+    $totalProgram = DB::table('programkerja')
+        ->count();
+
+    $progress =  number_format(($doneProgram/$totalProgram)*100);
+
+    $danaMasuk = DB::table('dana')
+        ->where('tipeTransaksi', '=', 'DanaMasuk')
+        ->sum('biaya');
+    $danaKeluar = DB::table('dana')
+        ->where('tipeTransaksi', '=', 'DanaKeluar')
+        ->sum('biaya');
+    $totalKas = $danaMasuk - $danaKeluar;
+
+    $thisMonth = DB::table('dana')
+    ->where('tanggalTransaksi', '=', date('m'))
+    ->sum('biaya');
+
+    return view('dashboard', [
+        'anggota' => $anggota,
+        'progress' => $progress,
+        'thisMonth' => $thisMonth,
+        'totalKas' => number_format($totalKas, 2, ',', '.')
+    ]);
 });
 Route::get('tables', function () {
     return view('system.tables');

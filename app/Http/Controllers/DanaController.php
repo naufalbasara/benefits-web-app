@@ -10,11 +10,28 @@ class DanaController extends Controller
 {
     public function index() {
         $dana = DB::table('dana')
-        ->join('anggota', 'dana.nrp', '=', 'anggota.nrp')
-        ->join('divisi', 'dana.divisiID', '=', 'divisi.divisiID')
         ->paginate(10);
 
-        return view('dana.index',['dana' => $dana]);
+        $danaMasuk = DB::table('dana')
+        ->where('tipeTransaksi', '=', 'DanaMasuk')
+        ->sum('biaya');
+        $danaKeluar = DB::table('dana')
+        ->where('tipeTransaksi', '=', 'DanaKeluar')
+        ->sum('biaya');
+        $totalKas = $danaMasuk - $danaKeluar;
+
+        $thisMonthIncome = DB::table('dana')
+        ->where('tanggalTransaksi', '=', date('m'))
+        ->where('tipeTransaksi', '=', 'DanaMasuk')
+        ->sum('biaya');
+
+        return view('dana.index',[
+            'dana' => $dana,
+            'thisMonthIncome' => $thisMonthIncome,
+            'totalKas' => number_format($totalKas, 2, ',', '.'),
+            'danaMasuk' => number_format($danaMasuk, 2, ',', '.'),
+            'danaKeluar' => number_format($danaKeluar, 2, ',', '.')
+        ]);
     }
 
     public function view($id) {
