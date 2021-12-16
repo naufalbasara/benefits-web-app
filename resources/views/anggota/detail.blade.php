@@ -59,7 +59,13 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="nama">Gender</label>
-                    <input type="text" class="form-control form-control-user" id="gender" value="{{$a->gender}}" disabled>
+                    <input type="text" class="form-control form-control-user" id="gender"
+                    value= "<?php if($a->gender == 'L') {
+                        echo "Laki-Laki";
+                    } else {
+                        echo "Perempuan";
+                    }
+                    ?>" disabled>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="nama">Alamat</label>
