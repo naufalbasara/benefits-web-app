@@ -6,6 +6,8 @@ use App\Http\Controllers\PengurusController;
 use App\Http\Controllers\ProgramKerjaController;
 use App\Http\Controllers\DanaController;
 use App\Http\Controllers\DivisiController;
+use Illuminate\Support\Facades\DB;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

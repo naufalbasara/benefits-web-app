@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-
 class PengurusController extends Controller
 {
     public function index() {
@@ -14,7 +13,9 @@ class PengurusController extends Controller
         ->join('divisi', 'pengurus.divisiID', '=', 'divisi.divisiID')
         ->paginate(10);
 
-        return view('pengurus.index',['pengurus' => $pengurus]);
+        return view('pengurus.index',[
+            'pengurus' => $pengurus
+        ]);
     }
 
     public function view($id) {
@@ -34,13 +35,25 @@ class PengurusController extends Controller
 
     public function edit($id) {
         $pengurus = DB::table('pengurus')
-        ->where('nrp', $id)
+        ->join('anggota', 'pengurus.nrp', '=', 'anggota.nrp')
+        ->join('divisi', 'pengurus.divisiID', '=', 'divisi.divisiID')
+        ->where('pengurusID', '=', $id)
         ->get();
-        $nama = DB::table('pengurus')
+
+        $nama = DB::table('anggota')
         ->select('nama')
-        ->where('nrp', $id)
+        ->join('pengurus', 'anggota.nrp', '=', 'pengurus.nrp')
+        ->where('pengurusID', $id)
         ->get();
-        return view('pengurus.edit', ['pengurus' => $pengurus, 'nama' => $nama]);
+
+        $divisi = DB::table('divisi')
+        ->get();
+
+        return view('pengurus.edit', [
+            'pengurus' => $pengurus,
+            'nama' => $nama,
+            'divisi' => $divisi
+        ]);
     }
 
     public function delete($id) {
@@ -50,17 +63,27 @@ class PengurusController extends Controller
 
     public function add() {
         $anggota = DB::table('anggota')
+        ->select('anggota.nama', 'anggota.nrp', 'pengurus.pengurusID')
         ->leftJoin('pengurus', 'anggota.nrp', '=', 'pengurus.nrp')
         ->where('pengurus.pengurusID', '=', null)
         ->get();
+
         $divisi = DB::table('divisi')
         ->get();
+
         return view('pengurus.add', ['anggota' => $anggota, 'divisi' => $divisi]);
     }
 
     public function store(Request $request) {
+        $last_id = DB::table('pengurus')->count();
+        if($last_id < 10) {
+            $pengurusID = "P0".strval($last_id);
+        } else {
+            $pengurusID = "P".strval($last_id+1);
+        }
+
         DB::table('pengurus')->insert([
-            'pengurusID' => $request->pengurusID,
+            'pengurusID' => $pengurusID,
             'nrp' => $request->nrp,
             'divisiID' => $request->divisiID,
             'jabatan' => $request->jabatan
@@ -69,7 +92,7 @@ class PengurusController extends Controller
     }
 
     public function update(Request $request) {
-        DB::table('pengurus')->where('nrp',$request->nrp)->update([
+        DB::table('pengurus')->where('pengurusID',$request->pengurusID)->update([
             'pengurusID' => $request->pengurusID,
             'nrp' => $request->nrp,
             'divisiID' => $request->divisiID,

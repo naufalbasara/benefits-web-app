@@ -1,5 +1,5 @@
 @extends('layout.template')
-@section('title', 'Anggota Forda')
+@section('title', 'Pengurus Forda')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +18,7 @@
             </div>
             <div class="card-body">
 
-                <form action="/anggota/store" method="post">
+                <form action="/pengurus/store" method="post">
                     {{ csrf_field() }}
                     <input type="hidden" name="pengurusID">
                     <div class="form-group">

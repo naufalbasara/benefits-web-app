@@ -10,11 +10,23 @@ class DivisiController extends Controller
 {
     public function index() {
         $divisi = DB::table('divisi')
-        ->join('anggota', 'divisi.nrp', '=', 'anggota.nrp')
-        ->join('divisi', 'divisi.divisiID', '=', 'divisi.divisiID')
         ->paginate(10);
 
-        return view('divisi.index',['divisi' => $divisi]);
+        $numberOfStaff = DB::table('pengurus')
+        ->join('divisi', 'pengurus.divisiID', '=', 'divisi.divisiID')
+        ->groupBy('pengurus.divisiID')
+        ->count();
+
+        $numberOfProker = DB::table('divisi')
+        ->join('programkerja', 'divisi.divisiID', '=', 'programkerja.divisiID')
+        ->groupBy('programkerja.divisiID')
+        ->count();
+
+        return view('divisi.index',[
+            'divisi' => $divisi,
+            'numberOfStaff' => $numberOfStaff,
+            'numberOfProker' => $numberOfProker
+        ]);
     }
 
     public function view($id) {
