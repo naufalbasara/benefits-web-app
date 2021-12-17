@@ -60,9 +60,9 @@
                     <input type="text" class="form-control form-control-user" id="noHp" value="{{$p->noHp}}" disabled>
                 </div>
 
-                <a href="/pengurus/edit/{{$p -> divisiID}}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="/pengurus/edit/{{$p -> pengurusID}}" class="btn btn-sm btn-primary">Edit</a>
                 |
-                <a href="/pengurus/delete/{{$p -> divisiID}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$p->nama}} From pengurus?')">Delete</a>
+                <a href="/pengurus/delete/{{$p -> pengurusID}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$p->nama}} From pengurus?')">Delete</a>
                 @endforeach
 
             </div>
