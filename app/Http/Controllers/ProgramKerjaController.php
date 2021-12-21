@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-
 class ProgramKerjaController extends Controller
 {
     public function index() {
@@ -26,6 +25,7 @@ class ProgramKerjaController extends Controller
 
         $fund = DB::table('programkerja')
         ->leftJoin('dana', 'programkerja.danaID', '=', 'dana.danaID')
+        ->where('tipeTransaksi', '=', 'DanaKeluar')
         ->sum('biaya');
 
         $danaMasuk = DB::table('dana')
@@ -63,49 +63,134 @@ class ProgramKerjaController extends Controller
     }
 
     public function edit($id) {
-        $programkerja = DB::table('programkerja')
-        ->where('nrp', $id)
+        $pengurus = DB::table('pengurus')
+        ->join('anggota', 'pengurus.nrp', '=', 'anggota.nrp')
         ->get();
+
+        $divisi = DB::table('divisi')
+        ->get();
+
+        $pic = DB::table('pengurus')
+        ->join('anggota', 'pengurus.nrp', '=', 'anggota.nrp')
+        ->join('divisi', 'pengurus.divisiID', '=', 'divisi.divisiID')
+        ->join('programkerja', 'pengurus.pengurusID', '=', 'programkerja.pengurusID')
+        ->where('programkerja.prokerID', $id)
+        ->first();
+
+        $proker = DB::table('programkerja')
+        ->join('dana', 'programkerja.danaID', '=', 'dana.danaID')
+        ->where('prokerID', $id)
+        ->get();
+
+        $pengurusDivisi = DB::table('pengurus')
+        ->join('divisi', 'pengurus.divisiID', '=', 'divisi.divisiID')
+        ->join('programkerja', 'pengurus.pengurusID', '=', 'programkerja.pengurusID')
+        ->where('programkerja.prokerID', $id)
+        ->first();
+
         $nama = DB::table('programkerja')
-        ->select('nama')
-        ->where('nrp', $id)
-        ->get();
-        return view('programkerja.edit', ['programkerja' => $programkerja, 'nama' => $nama]);
+        ->select('namaProker')
+        ->where('prokerID', $id)
+        ->first();
+        return view('programkerja.edit', [
+            'pengurus' => $pengurus,
+            'nama' => $nama,
+            'divisi' => $divisi,
+            'pengurusDivisi' => $pengurusDivisi,
+            'pic' => $pic,
+            'proker' => $proker
+        ]);
     }
 
     public function delete($id) {
-        DB::table('programkerja')->where('programkerjaID',$id)->delete();
-        return redirect('/programkerja');
+        $danaID = DB::table('programkerja')->select('danaID')->where('prokerID',$id)->first();
+        DB::table('dana')->where('danaID',$danaID->danaID)->delete();
+        DB::table('programkerja')->where('prokerID',$id)->delete();
+        return redirect('/proker');
     }
 
     public function add() {
-        $anggota = DB::table('anggota')
-        ->leftJoin('programkerja', 'anggota.nrp', '=', 'programkerja.nrp')
-        ->where('programkerja.programkerjaID', '=', null)
+        $pengurus = DB::table('pengurus')
+        ->join('anggota', 'pengurus.nrp', '=', 'anggota.nrp')
+        ->join('divisi', 'pengurus.divisiID', '=', 'divisi.divisiID')
         ->get();
         $divisi = DB::table('divisi')
         ->get();
-        return view('programkerja.add', ['anggota' => $anggota, 'divisi' => $divisi]);
+
+        return view('programkerja.add', [
+            'pengurus' => $pengurus,
+            'divisi' => $divisi
+        ]);
     }
 
     public function store(Request $request) {
-        DB::table('programkerja')->insert([
-            'programkerjaID' => $request->programkerjaID,
-            'nrp' => $request->nrp,
-            'divisiID' => $request->divisiID,
-            'jabatan' => $request->jabatan
+        $last_prokerID = DB::table('programkerja')->select('prokerID')->orderBy('prokerID', 'desc')->first();
+        $last_prokerID = (int)substr($last_prokerID->prokerID , -2);
+
+        $last_danaID = DB::table('dana')->select('danaID')->orderBy('danaID', 'desc')->first();
+        $last_danaID = (int)substr($last_danaID->danaID , -3);
+
+        if($last_prokerID < 9) {
+            $prokerID = "PK0".strval($last_prokerID+1);
+        } else {
+            $prokerID = "PK".strval($last_prokerID+1);
+        }
+
+        if($last_danaID < 9) {
+            $danaID = "DN00".strval($last_danaID+1);
+        } else if($last_danaID < 99){
+            $danaID = "DN0".strval($last_danaID+1);
+        } else {
+            $danaID = "DN".strval($last_danaID+1);
+        }
+
+        if($request->biaya == '' or $request->biaya == null) {
+            $biaya = 0;
+        }
+        DB::table('dana')->insert([
+            'danaID' => $danaID,
+            'tipeTransaksi' => 'DanaKeluar',
+            'biaya' => $biaya,
+            'tanggalTransaksi' => $request->tanggalKegiatan,
+            'sumber' => null,
+            'keperluan' => $request->namaProker
         ]);
-        return redirect('/programkerja');
+
+        DB::table('programkerja')->insert([
+            'prokerID' => $prokerID,
+            'pengurusID' => $request->pengurusID,
+            'divisiID' => $request->divisiID,
+            'danaID' => $danaID,
+            'namaProker' => $request->namaProker,
+            'tanggalKegiatan' => $request->tanggalKegiatan,
+            'status' => $request->status
+        ]);
+
+
+        return redirect('/proker');
     }
 
     public function update(Request $request) {
-        DB::table('programkerja')->where('nrp',$request->nrp)->update([
-            'programkerjaID' => $request->programkerjaID,
-            'nrp' => $request->nrp,
+        DB::table('programkerja')->where('prokerID',$request->prokerID)->update([
+            'prokerID' => $request->prokerID,
+            'pengurusID' => $request->pengurusID,
             'divisiID' => $request->divisiID,
-            'jabatan' => $request->jabatan
+            'danaID' => $request->danaID,
+            'namaProker' => $request->namaProker,
+            'tanggalKegiatan' => $request->tanggalKegiatan,
+            'status' => $request->status
         ]);
-        return redirect('/programkerja');
+
+        DB::table('dana')->where('danaID', $request->danaID)->update([
+            'danaID' => $request->danaID,
+            'tipeTransaksi' => 'DanaKeluar',
+            'biaya' => $request->biaya,
+            'tanggalTransaksi' => $request->tanggalKegiatan,
+            'sumber' => null,
+            'keperluan' => $request->namaProker
+        ]);
+
+        return redirect('/proker');
     }
 
 }

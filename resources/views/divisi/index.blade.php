@@ -40,48 +40,8 @@
                             @foreach ($divisi as $d)
                             <tr>
                                 <td>{{$d -> namaDivisi}}</td>
-                                <td>
-                                    <?php
-                                        if($d->divisiID == 'D01') {
-                                            echo $Staff->where('divisiID', '=', 'D01')->count();
-                                        } else if($d->divisiID == 'D02') {
-                                            echo $Staff->where('divisiID', '=', 'D02')->count();
-                                        } else if($d->divisiID == 'D03') {
-                                            echo $Staff->where('divisiID', '=', 'D03')->count();
-                                        } else if($d->divisiID == 'D04') {
-                                            echo $Staff->where('divisiID', '=', 'D04')->count();
-                                        } else if($d->divisiID == 'D05') {
-                                            echo $Staff->where('divisiID', '=', 'D05')->count();
-                                        } else if($d->divisiID == 'D06') {
-                                            echo $Staff->where('divisiID', '=', 'D06')->count();
-                                        } else if($d->divisiID == 'D07') {
-                                            echo $Staff->where('divisiID', '=', 'D07')->count();
-                                        } else {
-                                            echo $Staff->where('divisiID', '=', 'D08')->count();
-                                        }
-                                    ?>
-                                </td>
-                                <td>
-                                    <?php
-                                        if($d->divisiID == 'D01') {
-                                            echo $numberOfProker->where('divisiID', '=', 'D01')->count();
-                                        } else if($d->divisiID == 'D02') {
-                                            echo $numberOfProker->where('divisiID', '=', 'D02')->count();
-                                        } else if($d->divisiID == 'D03') {
-                                            echo $numberOfProker->where('divisiID', '=', 'D03')->count();
-                                        } else if($d->divisiID == 'D04') {
-                                            echo $numberOfProker->where('divisiID', '=', 'D04')->count();
-                                        } else if($d->divisiID == 'D05') {
-                                            echo $numberOfProker->where('divisiID', '=', 'D05')->count();
-                                        } else if($d->divisiID == 'D06') {
-                                            echo $numberOfProker->where('divisiID', '=', 'D06')->count();
-                                        } else if($d->divisiID == 'D07') {
-                                            echo $numberOfProker->where('divisiID', '=', 'D07')->count();
-                                        } else {
-                                            echo $numberOfProker->where('divisiID', '=', 'D08')->count();
-                                        }
-                                    ?>
-                                </td>
+                                <td><?php echo $Staff->where('divisiID', '=', $d->divisiID)->count();?></td>
+                                <td><?php echo $numberOfProker->where('divisiID', '=', $d->divisiID)->count();?></td>
                                 <td>
                                     <a href="divisi/detail/{{$d -> divisiID}}" class="btn btn-sm btn-info">View Details</a>
                                     |

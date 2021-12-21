@@ -133,7 +133,22 @@
                                 <td>{{$p -> namaProker}}</td>
                                 <td>{{$p -> namaDivisi}}</td>
                                 <td>{{$p -> tanggalKegiatan}}</td>
-                                <td>{{$p -> nama}}</td>
+                                <td>
+                                    <?php
+                                        if(strlen($p ->nama) > 20) {
+                                            $nama = explode(' ', $p ->nama);
+                                            if(count($nama) > 2) {
+                                                array_splice($nama, 2, 1);
+                                                echo implode(' ', $nama);
+                                            } else {
+                                                array_splice($nama, 1, 1);
+                                                echo implode(' ', $nama);
+                                            }
+                                        } else {
+                                            echo $p->nama;
+                                        }
+                                    ?>
+                                </td>
                                 <td>{{$p -> status}}</td>
                                 <td>
                                     <a href="proker/detail/{{$p -> prokerID}}" class="btn btn-sm btn-info">View Details</a>
