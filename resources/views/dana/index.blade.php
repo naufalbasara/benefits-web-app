@@ -95,7 +95,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Program Kerja BENEFITS</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data Kas BENEFITS</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -128,7 +128,16 @@
                                         }
                                     ?>
                                 </td>
-                                <td>{{$d -> biaya}}</td>
+                                <td>Rp
+                                    <?php
+                                        if($d->tipeTransaksi == 'DanaMasuk') {
+                                            echo number_format($d -> biaya, 0, ',', '.');
+                                        } else {
+                                            echo '-'.number_format($d -> biaya, 0, ',', '.');
+                                        }
+
+                                    ?>
+                                </td>
                                 <td>
                                     <?php
                                         if(($d -> sumber) != null) {

@@ -21,43 +21,31 @@ class DanaController extends Controller
         $totalKas = $danaMasuk - $danaKeluar;
 
         $thisMonthIncome = DB::table('dana')
-        ->where('tanggalTransaksi', '=', date('m'))
+        ->where('tanggalTransaksi', '=', date('Y-M'))
         ->where('tipeTransaksi', '=', 'DanaMasuk')
         ->sum('biaya');
 
         return view('dana.index',[
             'dana' => $dana,
             'thisMonthIncome' => $thisMonthIncome,
-            'totalKas' => number_format($totalKas, 2, ',', '.'),
-            'danaMasuk' => number_format($danaMasuk, 2, ',', '.'),
-            'danaKeluar' => number_format($danaKeluar, 2, ',', '.')
+            'totalKas' => number_format($totalKas, 0, ',', '.'),
+            'danaMasuk' => number_format($danaMasuk, 0, ',', '.'),
+            'danaKeluar' => number_format($danaKeluar, 0, ',', '.')
         ]);
     }
 
     public function view($id) {
         $dana = DB::table('dana')
-        ->join('anggota', 'dana.nrp', '=', 'anggota.nrp')
-        ->join('divisi', 'dana.divisiID', '=', 'divisi.divisiID')
         ->where('danaID', $id)
         ->get();
-
-        $nama = DB::table('dana')
-        ->select('nama')
-        ->join('anggota', 'dana.nrp', '=', 'anggota.nrp')
-        ->where('danaID', $id)
-        ->get();
-        return view('dana.detail',['dana' => $dana, 'nama' => $nama]);
+        return view('dana.detail',['dana' => $dana]);
     }
 
     public function edit($id) {
         $dana = DB::table('dana')
-        ->where('nrp', $id)
+        ->where('danaID', $id)
         ->get();
-        $nama = DB::table('dana')
-        ->select('nama')
-        ->where('nrp', $id)
-        ->get();
-        return view('dana.edit', ['dana' => $dana, 'nama' => $nama]);
+        return view('dana.edit', ['dana' => $dana]);
     }
 
     public function delete($id) {
@@ -66,31 +54,48 @@ class DanaController extends Controller
     }
 
     public function add() {
-        $anggota = DB::table('anggota')
-        ->leftJoin('dana', 'anggota.nrp', '=', 'dana.nrp')
-        ->where('dana.danaID', '=', null)
-        ->get();
-        $divisi = DB::table('divisi')
-        ->get();
-        return view('dana.add', ['anggota' => $anggota, 'divisi' => $divisi]);
+        return view('dana.add');
     }
 
     public function store(Request $request) {
+        $last_danaID = DB::table('dana')->select('danaID')->orderBy('danaID', 'desc')->first();
+        $last_danaID = (int)substr($last_danaID->danaID , -3);
+        $biaya = $request->biaya;
+        if($last_danaID < 9) {
+            $danaID = "DN00".strval($last_danaID+1);
+        } else if($last_danaID < 99){
+            $danaID = "DN0".strval($last_danaID+1);
+        } else {
+            $danaID = "DN".strval($last_danaID+1);
+        }
+
+        if($request->biaya == '' or $request->biaya == null) {
+            $biaya = 0;
+        }
+
         DB::table('dana')->insert([
-            'danaID' => $request->danaID,
-            'nrp' => $request->nrp,
-            'divisiID' => $request->divisiID,
-            'jabatan' => $request->jabatan
+            'danaID' => $danaID,
+            'tipeTransaksi' => $request->tipeTransaksi,
+            'biaya' => $biaya,
+            'tanggalTransaksi' => $request->tanggalTransaksi,
+            'sumber' => $request->sumber,
+            'keperluan' => $request->keperluan,
         ]);
         return redirect('/dana');
     }
 
     public function update(Request $request) {
-        DB::table('dana')->where('nrp',$request->nrp)->update([
+        $biaya = $request->biaya;
+        if($request->biaya == '' or $request->biaya == null) {
+            $biaya = 0;
+        }
+        DB::table('dana')->where('danaID',$request->danaID)->update([
             'danaID' => $request->danaID,
-            'nrp' => $request->nrp,
-            'divisiID' => $request->divisiID,
-            'jabatan' => $request->jabatan
+            'tipeTransaksi' => $request->tipeTransaksi,
+            'biaya' => $biaya,
+            'tanggalTransaksi' => $request->tanggalTransaksi,
+            'sumber' => $request->sumber,
+            'keperluan' => $request->keperluan,
         ]);
         return redirect('/dana');
     }

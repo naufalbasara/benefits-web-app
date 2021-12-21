@@ -129,6 +129,7 @@ class ProgramKerjaController extends Controller
 
         $last_danaID = DB::table('dana')->select('danaID')->orderBy('danaID', 'desc')->first();
         $last_danaID = (int)substr($last_danaID->danaID , -3);
+        $biaya = $request->biaya;
 
         if($last_prokerID < 9) {
             $prokerID = "PK0".strval($last_prokerID+1);
