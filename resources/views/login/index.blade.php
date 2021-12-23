@@ -93,7 +93,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="/register">Create an Account!</a>
+                                        <a class="small" href="/register">Pengurus Forda? Create an Account!</a>
                                     </div>
                                 </div>
                             </div>
