@@ -75,11 +75,12 @@ class PengurusController extends Controller
     }
 
     public function store(Request $request) {
-        $last_id = DB::table('pengurus')->count();
-        if($last_id < 9) {
-            $pengurusID = "P0".strval($last_id+1);
+        $last_pengurusID = DB::table('pengurus')->select('pengurusID')->orderBy('pengurusID', 'desc')->first();
+        $last_pengurusID = (int)substr($last_pengurusID->pengurusID , -2);
+        if($last_pengurusID < 9) {
+            $pengurusID = "P0".strval($last_pengurusID+1);
         } else {
-            $pengurusID = "P".strval($last_id+1);
+            $pengurusID = "P".strval($last_pengurusID+1);
         }
 
         DB::table('pengurus')->insert([
