@@ -30,6 +30,7 @@ class AnggotaController extends Controller
         $anggota = DB::table('anggota')
         ->where('nrp', $id)
         ->get();
+
         $nama = DB::table('anggota')
         ->select('nama')
         ->where('nrp', $id)
