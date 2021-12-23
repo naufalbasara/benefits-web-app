@@ -10,7 +10,9 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">Data Kas BENEFITS</h1>
+        @can('admin', 'kewirausahaan')
         <a href="dana/add" class="btn btn-md btn-success mb-3">Tambah Data</a>
+        @endcan
 
         <div class="row">
 
@@ -151,10 +153,12 @@
                                 </td>
                                 <td>
                                     <a href="dana/detail/{{$d -> danaID}}" class="btn btn-sm btn-info">View Details</a>
+                                    @can('admin', 'kewirausahaan')
                                     |
                                     <a href="dana/edit/{{$d -> danaID}}" class="btn btn-sm btn-primary">Edit</a>
                                     |
                                     <a href="dana/delete/{{$d -> danaID}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$d->danaID}} From Dana?')">Delete</a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

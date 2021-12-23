@@ -19,7 +19,7 @@ class LoginController extends Controller
             'password' => ['required', 'min:5'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember = true)) {
             $request->session()->regenerate();
 
             return redirect()->intended('/');

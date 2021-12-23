@@ -42,38 +42,73 @@
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label class="control-label" for="nama">Nama</label>
-                        <input type="text" class="form-control form-control-user" name="nama" id="nama" required>
+                        <input type="text" class="form-control form-control-user @error('nama') is-invalid @enderror" name="nama" id="nama" value="{{old('nama')}}" required>
+                        @error('nama')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="nrp">NRP</label>
-                        <input type="text" class="form-control form-control-user" name="nrp" id="nrp" required>
+                        <input type="text" class="form-control form-control-user @error('nrp') is-invalid @enderror" name="nrp" id="nrp" value="{{old('nrp')}}" required>
+                        @error('nrp')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="departemen">Departemen</label>
-                        <input type="text" class="form-control form-control-user" name="departemen" id="departemen" required>
+                        <input type="text" class="form-control form-control-user @error('departemen') is-invalid @enderror" name="departemen" id="departemen" value="{{old('departemen')}}" required>
+                        @error('departemen')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="angkatan">Angkatan</label>
-                        <input type="text" class="form-control form-control-user" name="angkatan" id="angkatan" required>
+                        <input type="text" class="form-control form-control-user @error('angkatan') is-invalid @enderror" name="angkatan" id="angkatan" value="{{old('angkatan')}}" required>
+                        @error('angkatan')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                          </div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="gender">Gender</label>
-                        <select class="form-select form-select-md" name="gender" id="gender">
+                        <select class="form-select form-select-md @error('gender') is-invalid @enderror" name="gender" id="gender">
                             <option value="L">Laki-Laki</option>
                             <option value="P">Perempuan</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="alamat">Alamat</label>
-                        <textarea name="alamat" class="form-control form-control-user" name="alamat" id="alamat" rows="3" required></textarea>
+                        <textarea name="alamat" class="form-control form-control-user @error('alamat') is-invalid @enderror" name="alamat" id="alamat" rows="3" required></textarea>
+                        @error('alamat')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                          </div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="asalSekolah">Asal Sekolah</label>
-                        <input type="text" class="form-control form-control-user" name="asalSekolah" id="asalSekolah" required>
+                        <input type="text" class="form-control form-control-user @error('asalSekolah') is-invalid @enderror" name="asalSekolah" id="asalSekolah" value="{{old('asalSekolah')}}" required>
+                        @error('asalSekolah')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                          </div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="noHp">Nomor HP</label>
-                        <input type="text" class="form-control form-control-user" name="noHp" id="noHp" required>
+                        <input type="text" class="form-control form-control-user @error('noHp') is-invalid @enderror" name="noHp" id="noHp" value="{{old('noHp')}}" required>
+                        @error('noHp')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                          </div>
+                        @enderror
                     </div>
 
                     <button type="submit" class="btn btn-sm btn-success">Tambah</button>

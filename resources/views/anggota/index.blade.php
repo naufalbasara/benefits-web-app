@@ -32,7 +32,9 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">Data Anggota BENEFITS</h1>
+        @can('admin', 'sekretaris')
         <a href="anggota/add" class="btn btn-md btn-success mb-3">Tambah Data</a>
+        @endcan
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -69,10 +71,12 @@
                                 <td>{{$a -> angkatan}}</td>
                                 <td>
                                     <a href="anggota/detail/{{$a -> nrp}}" class="btn btn-sm btn-info">View Details</a>
+                                    @can('admin', 'sekretaris')
                                     |
                                     <a href="anggota/edit/{{$a -> nrp}}" class="btn btn-sm btn-primary">Edit</a>
                                     |
                                     <a href="anggota/delete/{{$a -> nrp}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$a->nama}} From Anggota?')">Delete</a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

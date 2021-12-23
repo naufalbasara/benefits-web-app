@@ -10,7 +10,9 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">Data Divisi BENEFITS</h1>
+        @can('admin', 'sekretaris')
         <a href="divisi/add" class="btn btn-md btn-success mb-3">Tambah Data</a>
+        @endcan
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -44,10 +46,12 @@
                                 <td><?php echo $numberOfProker->where('divisiID', '=', $d->divisiID)->count();?></td>
                                 <td>
                                     <a href="divisi/detail/{{$d -> divisiID}}" class="btn btn-sm btn-info">View Details</a>
+                                    @can('admin', 'sekretaris')
                                     |
                                     <a href="divisi/edit/{{$d -> divisiID}}" class="btn btn-sm btn-primary">Edit</a>
                                     |
                                     <a href="divisi/delete/{{$d -> divisiID}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$d->namaDivisi}} From divisi?')">Delete</a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

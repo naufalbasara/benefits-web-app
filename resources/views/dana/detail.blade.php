@@ -26,7 +26,9 @@
                                 <th>Tanggal Transaksi</th>
                                 <th>Biaya</th>
                                 <th>Sumber/Keperluan</th>
+                                @can('admin', 'kewirausahaan')
                                 <th>Opsi</th>
+                                @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -66,11 +68,13 @@
                                         }
                                     ?>
                                 </td>
+                                @can('admin', 'kewirausahaan')
                                 <td>
                                     <a href="/dana/edit/{{$d -> danaID}}" class="btn btn-sm btn-primary">Edit</a>
                                     |
                                     <a href="/dana/delete/{{$d -> danaID}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$d->danaID}} From Dana?')">Delete</a>
                                 </td>
+                                @endcan
                             </tr>
                             @endforeach
                         </tbody>

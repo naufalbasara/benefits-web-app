@@ -83,6 +83,7 @@ class PengurusController extends Controller
             $pengurusID = "P".strval($last_pengurusID+1);
         }
 
+
         DB::table('pengurus')->insert([
             'pengurusID' => $pengurusID,
             'nrp' => $request->nrp,

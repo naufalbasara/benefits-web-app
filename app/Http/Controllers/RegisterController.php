@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -21,9 +22,29 @@ class RegisterController extends Controller
             'password' => ['required', 'min:5']
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
+        $divisi = DB::table('divisi')
+        ->select('divisi.divisiID')
+        ->join('pengurus', 'divisi.divisiID', '=', 'pengurus.divisiID')
+        ->where('pengurus.pengurusID', $validatedData['pengurusID'])
+        ->first();
 
-        User::create($validatedData);
+        if($divisi == 'D01') {
+            $role = 'Ketua';
+        } else if($divisi == 'D02') {
+            $role = 'Sekretaris';
+        } else if($divisi == 'D03') {
+            $role = 'Kewirausahaan';
+        } else {
+            $role = 'Internal&Eksternal';
+        }
+
+        $new_user = new User;
+        $new_user->name = $validatedData['name'];
+        $new_user->pengurusID = $validatedData['pengurusID'];
+        $new_user->role = $role;
+        $new_user->username = $validatedData['username'];
+        $new_user->password = Hash::make($validatedData['password']);
+        $new_user->save();
 
         return redirect('/login')->with('success', 'Registration Success, Please Login!');
     }

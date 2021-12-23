@@ -34,7 +34,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">BENEFITS</div>
+                <div class="sidebar-brand-text mx-3">BENEFITS Web App</div>
             </a>
 
             <!-- Divider -->
@@ -167,7 +167,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth()->user()->name}}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Welcome, {{auth()->user()->name}}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{{asset('img/undraw_profile.svg')}}">
                             </a>
@@ -205,6 +205,12 @@
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; BENEFITS Tangerang ITS 2021</span>
                     </div>
+                    <div class="copyright text-center my-auto">
+                        <p class="mt-sm-2">Develop with <a target="_blank" href="https://github.com/naufalbasara"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                          </svg></a></p>
+                    </div>
+
                 </div>
             </footer>
             <!-- End of Footer -->

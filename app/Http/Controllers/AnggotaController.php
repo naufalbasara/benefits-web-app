@@ -48,6 +48,17 @@ class AnggotaController extends Controller
     }
 
     public function store(Request $request) {
+        $request->validate([
+            'nrp' => ['required', 'unique:anggota', 'max:14'],
+            'departemen' => ['required'],
+            'nama' => ['required'],
+            'angkatan' => ['required', 'max:4'],
+            'gender' => ['required'],
+            'alamat' => ['required'],
+            'asalSekolah' => ['required'],
+            'noHp' => ['required'],
+        ]);
+
         DB::table('anggota')->insert([
             'nrp' => $request->nrp,
             'departemen' => $request->departemen,

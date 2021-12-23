@@ -59,10 +59,11 @@
                     <label class="control-label" for="noHp">Nomor HP</label>
                     <input type="text" class="form-control form-control-user" id="noHp" value="{{$p->noHp}}" disabled>
                 </div>
-
+                @can('admin', 'sekretaris')
                 <a href="/pengurus/edit/{{$p -> pengurusID}}" class="btn btn-sm btn-primary">Edit</a>
                 |
                 <a href="/pengurus/delete/{{$p -> pengurusID}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$p->nama}} From pengurus?')">Delete</a>
+                @endcan
                 @endforeach
 
             </div>
