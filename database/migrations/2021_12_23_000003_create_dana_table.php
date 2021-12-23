@@ -16,7 +16,7 @@ class CreateDanaTable extends Migration
         Schema::create('dana', function (Blueprint $table) {
             $table->char('danaID', 5)->unique()->primary();
             $table->enum('tipeTransaksi', ['DanaMasuk', 'DanaKeluar']);
-            $table->int('biaya');
+            $table->integer('biaya');
             $table->date('tanggalTransaksi')->nullable();
             $table->string('sumber', 30)->nullable();
             $table->string('keperluan', 50)->nullable();
