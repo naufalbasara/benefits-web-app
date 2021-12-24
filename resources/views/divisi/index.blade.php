@@ -50,7 +50,7 @@
                                     |
                                     <a href="divisi/edit/{{$d -> divisiID}}" class="btn btn-sm btn-primary">Edit</a>
                                     |
-                                    <a href="divisi/delete/{{$d -> divisiID}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$d->namaDivisi}} From divisi?')">Delete</a>
+                                    <a href="divisi/delete/{{$d -> divisiID}}" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure You Want to Delete {{$d->namaDivisi}} From Divisi?')">Delete</a>
                                     @endcan
                                 </td>
                             </tr>
