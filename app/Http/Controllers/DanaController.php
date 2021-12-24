@@ -21,13 +21,14 @@ class DanaController extends Controller
         $totalKas = $danaMasuk - $danaKeluar;
 
         $thisMonthIncome = DB::table('dana')
-        ->where('tanggalTransaksi', '=', date('Y-M'))
         ->where('tipeTransaksi', '=', 'DanaMasuk')
+        ->where('tanggalTransaksi', '>', date('Y-m-01'))
+        ->where('tanggalTransaksi', '<=', date('Y-m-d'))
         ->sum('biaya');
 
         return view('dana.index',[
             'dana' => $dana,
-            'thisMonthIncome' => $thisMonthIncome,
+            'thisMonthIncome' => number_format($thisMonthIncome, 0, ',', '.'),
             'totalKas' => number_format($totalKas, 0, ',', '.'),
             'danaMasuk' => number_format($danaMasuk, 0, ',', '.'),
             'danaKeluar' => number_format($danaKeluar, 0, ',', '.')

@@ -54,7 +54,9 @@ Route::group(['middleware' => ['auth']], function(){
         $totalKas = $danaMasuk - $danaKeluar;
 
         $thisMonth = DB::table('dana')
-        ->where('tanggalTransaksi', '=', date('m'))
+        ->where('tipeTransaksi', '=', 'DanaMasuk')
+        ->where('tanggalTransaksi', '>', date('Y-m-01'))
+        ->where('tanggalTransaksi', '<=', date('Y-m-d'))
         ->sum('biaya');
 
         return view('dashboard', [
@@ -62,7 +64,7 @@ Route::group(['middleware' => ['auth']], function(){
             'progress' => $progress,
             'onProgress' => $onProgress,
             'pendingProgress' => $pendingProgress,
-            'thisMonth' => $thisMonth,
+            'thisMonth' => number_format($thisMonth, 0, ',', '.'),
             'totalKas' => number_format($totalKas, 2, ',', '.')
         ]);
     });
