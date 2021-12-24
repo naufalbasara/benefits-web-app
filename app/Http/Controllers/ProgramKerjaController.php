@@ -42,7 +42,7 @@ class ProgramKerjaController extends Controller
             'totalProgram' => $totalProgram,
             'progress' => $progress,
             'fund' => number_format($fund, 2, ',', '.'),
-            'totalKas' => number_format($totalKas, 2, ',', '.')
+            'totalKas' => $totalKas
         ]);
     }
 
