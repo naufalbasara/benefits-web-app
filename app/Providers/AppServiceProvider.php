@@ -29,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
+        if(env('APP_ENV') !== 'local') {
+            URL::forceScheme('http');
+        }
+
         Gate::define('admin', function(User $user) {
             return $user->role === 'admin';
         });
